@@ -1,0 +1,41 @@
+#Gastroduodenal
+Perforated peptic ulcer
+
+#Gallbladder
+Acute cholecystitis
+Rupture of gallbladder
+
+#Pancreas
+Acute pancreatitis
+
+#Small intestine
+Strangulated hernia
+Intestinal perforation
+Mesenteric thrombosis
+Mesenteric embolism
+Meckel's diverticulitis
+Acute ileitis
+
+#Large intestine
+Appendicitis
+Volvulitis
+Perforated diverticulitis
+
+#Peritoneum
+Infective peritonitis
+
+#Female genital organs
+Twisted ovarian cyst
+Ruptured ectopic pregnancy
+Acute salpingitis
+Torsion of fibroid
+Degeneration of fibroid
+Perforation of uterus
+Perforation of vagina
+
+#Spleen & liver
+Rupture of spleen
+Rupture of liver
+
+#Aorta
+Ruptured abdominal aortic aneurysm

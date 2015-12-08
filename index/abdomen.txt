@@ -1,0 +1,15 @@
+Peritonitis
+  Acute peritonitis
+  Tuberculous peritonitis
+  Bacterial peritonitis
+    Streptococcal peritonitis
+    Gonococcal peritonitis
+    Pneumococcal peritonitis
+Peptic ulcer
+ Gastric ulcer
+ Duodenal ulcer
+Rupture of spleen
+  Spontneous rupture of spleen
+  Traumatic rupture of spleen
+Degeneration of fibroid
+  Red degeneration of fibroid

@@ -1,0 +1,70 @@
+#Gastroduodenal
+Perforated peptic ulcer
+Perforated gastric carcinoma
+Acute gastritis
+Irritant poisons
+
+#Intestinal
+Small bowel obstruction
+Regional ileitis
+Intussusception
+Sigmoid volvulus
+Acute colonic diverticulitis
+Large bowel obstruction
+Strangulated hernia
+Acute mesenteric occlusion
+
+#Appendix
+Acute appendicitis
+
+#Pancreas
+Acute pancreatitis
+Recurrent pancreatitis
+Pancreatic trauma
+
+#Gallbladder and bile ducts
+Gallstone
+CBD stone
+Acute cholecystitis
+Acute cholangitis
+
+#Liver
+Liver trauma
+Acute hepatitis
+Liver malignancy
+
+#Spleen
+Splenic trauma
+Spontaneous rupture of spleen
+Splenic infarction
+
+#Urinary tract
+Renal calculus
+Ureteric calculus
+Vesical calculus
+Renal trauma
+Pyelonephritis
+Pyonephrosis
+
+#Female genitalia
+Salpingitis
+Pyosalpinx
+Ectopic pregnancy
+Torsion of fibroid
+Degenaration of fibroid
+Twisted ovarian cyst
+Ruptured ovarian cyst
+
+#Aorta
+Ruptured abdominal aortic aneurysm
+Dissecting abdominal aortic aneurysm
+
+#CNS
+Herpes zoster
+
+#Cardiac
+Myocardial infarction
+Acute pericarditis
+
+#Pleura
+Acute diaphragmatic pleurisy
