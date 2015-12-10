@@ -1,13 +1,8 @@
 #! /usr/bin/python3
 
+''' This module handles the different configuration options of DDStorm. '''
+
 '''
-DDStorm
--------
-DDStorm is a Python application for
-brainstorming medical differential diagnosis.
-
-Homepage: http://code.agnibho.com/ddstorm
-
 Copyright (c) 2015 Agnibho Mondal
 All rights reserved
 
@@ -27,13 +22,16 @@ You should have received a copy of the GNU General Public License
 along with DDStorm.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import os, logging
-from const import *                     # Import constants from const.py
-logging.basicConfig(filename=LOG_FILE)  # Set up logging
+import os
+import logging
+
+from const import *                     # Import constants
+
+logging.basicConfig(filename=LOG_FILE)
 
 class Conf:
     '''
-    * This class handles the configuration of DDStorm.
+    * This class manages DDStorm configuration options.
     * If the configuration file is found it reads the file
       and initiates the configurations.
     * If configuration couldn't be read it initiates some
@@ -42,19 +40,20 @@ class Conf:
       function calls.
     '''
     
-    conf={} #Initiates configuration list
+    conf={} #Initiates configuration dictionary
     
     def __init__(self, filename=CONF_FILE):
         '''
-        The constructor accepts a configuration filename
-        If none is provided it defaults to CONF_FILE from const
+        The constructor accepts a configuration filename.
+        If none is provided it defaults to CONF_FILE from const.
+        Calls default() and read()
         '''
         self.filename=filename
         self.default()
         self.read()
 
     def default(self):
-        ''' Sets the default values '''
+        ''' Set the default values '''
         self.conf["library_path"]="./library/"
         self.conf["custom_path"]="./custom/"
         self.conf["index_path"]="./index/"
@@ -65,7 +64,7 @@ class Conf:
         self.conf["status_message"]="on"
 
     def read(self):
-        ''' Reads the configuration file and collects the values '''
+        ''' Read the configuration file and collect the values '''
         if(os.path.isfile(self.filename)):         # If file is actually present
             try:
                 with open(self.filename) as f:     # Open file
@@ -116,6 +115,10 @@ class Conf:
 
         Parameters:
         key - string specifying the configuration item name
+        
+        Return value:
+        String value if key is specified
+        Dictionary containing all options if key not specified
         '''
         if(key):
             return self.conf[key]
@@ -133,7 +136,7 @@ class Conf:
         self.conf[key]=value
 
     def write(self):
-        ''' Writes configurations to file '''
+        ''' Write configurations to file '''
         with open(CONF_FILE, "w") as f:
             for k in self.conf:
                 print(k+"="+self.conf[k], file=f)
