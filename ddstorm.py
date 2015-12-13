@@ -33,7 +33,7 @@ class DDStorm:
         else:
             self.conf=Conf()
         if(comp):
-            self.compiler=Compile(conf)
+            self.compiler=Compile(conf).compile()
         self.index=Index(conf)
 
     def dd(self, symptoms):

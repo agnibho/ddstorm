@@ -40,7 +40,7 @@ class Conf:
       function calls.
     '''
     
-    conf={} #Initiates configuration dictionary
+    _conf={} #Initiates configuration dictionary
     
     def __init__(self, filename=CONF_FILE):
         '''
@@ -54,14 +54,14 @@ class Conf:
 
     def default(self):
         ''' Set the default values '''
-        self.conf["library_path"]="./library/"
-        self.conf["custom_path"]="./custom/"
-        self.conf["index_path"]="./index/"
-        self.conf["alias_path"]="./alias/"
-        self.conf["module_path"]="./modules/"
-        self.conf["splash_screen"]="yes"
-        self.conf["clean_log"]="no"
-        self.conf["status_message"]="on"
+        self._conf["library_path"]="./library/"
+        self._conf["custom_path"]="./custom/"
+        self._conf["index_path"]="./index/"
+        self._conf["alias_path"]="./alias/"
+        self._conf["module_path"]="./modules/"
+        self._conf["splash_screen"]="yes"
+        self._conf["clean_log"]="no"
+        self._conf["status_message"]="on"
 
     def read(self):
         ''' Read the configuration file and collect the values '''
@@ -73,36 +73,36 @@ class Conf:
                         if(line.startswith("#")):  # Ignores comments
                             pass
                         elif(line.startswith("library_path=")):                 # Library files path
-                            self.conf["library_path"]=line[13:]
-                            if(os.path.isdir(self.conf["library_path"])):
-                               if(not self.conf["library_path"].endswith("/")):
-                                   self.conf["library_path"]+="/"
+                            self._conf["library_path"]=line[13:]
+                            if(os.path.isdir(self._conf["library_path"])):
+                               if(not self._conf["library_path"].endswith("/")):
+                                   self._conf["library_path"]+="/"
                         elif(line.startswith("custom_path=")):                  # Custom files path
-                            self.conf["custom_path"]=line[12:]
-                            if(os.path.isdir(self.conf["custom_path"])):
-                               if(not self.conf["custom_path"].endswith("/")):
-                                   self.conf["custom_path"]+="/"
+                            self._conf["custom_path"]=line[12:]
+                            if(os.path.isdir(self._conf["custom_path"])):
+                               if(not self._conf["custom_path"].endswith("/")):
+                                   self._conf["custom_path"]+="/"
                         elif(line.startswith("index_path=")):                   # Index files path
-                            self.conf["index_path"]=line[11:]
-                            if(os.path.isdir(self.conf["index_path"])):
-                               if(not self.conf["index_path"].endswith("/")):
-                                   self.conf["index_path"]+="/"
+                            self._conf["index_path"]=line[11:]
+                            if(os.path.isdir(self._conf["index_path"])):
+                               if(not self._conf["index_path"].endswith("/")):
+                                   self._conf["index_path"]+="/"
                         elif(line.startswith("alias_path=")):                   # Alias files path
-                            self.conf["alias_path"]=line[11:]
-                            if(os.path.isdir(self.conf["alias_path"])):
-                               if(not self.conf["alias_path"].endswith("/")):
-                                   self.conf["alias_path"]+="/"
+                            self._conf["alias_path"]=line[11:]
+                            if(os.path.isdir(self._conf["alias_path"])):
+                               if(not self._conf["alias_path"].endswith("/")):
+                                   self._conf["alias_path"]+="/"
                         elif(line.startswith("module_path=")):                  # Path to save compiled modules
-                            self.conf["module_path"]=line[12:]
-                            if(os.path.isdir(self.conf["module_path"])):
-                               if(not self.conf["module_path"].endswith("/")):
-                                   self.conf["module_path"]+="/"
+                            self._conf["module_path"]=line[12:]
+                            if(os.path.isdir(self._conf["module_path"])):
+                               if(not self._conf["module_path"].endswith("/")):
+                                   self._conf["module_path"]+="/"
                         elif(line.startswith("splash_screen=")):                # Whether to show a splash screen
-                            self.conf["splash_screen"]=line[14:]
+                            self._conf["splash_screen"]=line[14:]
                         elif(line.startswith("clean_log=")):                    # Whether to clean logs before exit
-                            self.conf["clean_log"]=line[10:]
+                            self._conf["clean_log"]=line[10:]
                         elif(line.startswith("status_message=")):               # Whether to show status messages
-                            self.conf["status_message"]=line[15:]
+                            self._conf["status_message"]=line[15:]
                         else:
                             logging.warning("Unrecognized configuration: "+line) # Log a warning if unrecognized option found
             except:     # Go with default if file could not be read and log an error
@@ -121,9 +121,9 @@ class Conf:
         Dictionary containing all options if key not specified
         '''
         if(key):
-            return self.conf[key]
+            return self._conf[key]
         else:
-            return self.conf
+            return self._conf
 
     def set(self, key, value):
         '''
@@ -133,13 +133,13 @@ class Conf:
         key - configuration item name
         value - the value to set the configuration item to
         '''
-        self.conf[key]=value
+        self._conf[key]=value
 
     def write(self):
         ''' Write configurations to file '''
         with open(CONF_FILE, "w") as f:
-            for k in self.conf:
-                print(k+"="+self.conf[k], file=f)
+            for k in self._conf:
+                print(k+"="+self._conf[k], file=f)
 
 #If invoked directly, prints a list of available configurations
 if(__name__=="__main__"):

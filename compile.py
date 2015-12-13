@@ -1,56 +1,82 @@
 #! /usr/bin/python3
 
-# DDStorm
-# -------
-# Copyright (c) 2015 Agnibho Mondal
-# All rights reserved
+'''
+This module converts text differetial diagnosis files
+to a simplified modular file format that can be used
+by the program.
+'''
+'''
+Copyright (c) 2015 Agnibho Mondal
+All rights reserved
 
-# This file is part of DDStorm.
+This file is part of DDStorm.
 
-# DDStorm is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+DDStorm is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-# DDStorm is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+DDStorm is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-# You should have received a copy of the GNU General Public License
-# along with DDStorm.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with DDStorm.  If not, see <http://www.gnu.org/licenses/>.
+'''
 
-import os, logging, re
+import os
+import logging
+import re
 from operator import itemgetter
 from fnmatch import fnmatch
+
 from conf import Conf
 from const import *
 from alias import Alias
+
 logging.basicConfig(filename=LOG_FILE)
 
 class Compile:
+    '''
+    This class creates a compiler for the DDStorm
+    that compiles the text files containing list of
+    differential diagnosis to simplified modular
+    data files usable by the program.
+    '''
+    
     def __init__(self, conf=False):
+        '''
+        The constructor optionally accepts a configuration.
+        If none is provided it creates a default configuration.
+
+        Parameters:
+        conf - A dictionary containing configuration options
+        '''
+        if(conf):
+            self._conf=conf
+        else:
+            self._conf=Conf()
+
+    def compile(self):
+        ''' Compile the text files to DDStorm modules. '''
         self.source=set()
         self.custom=set()
-        if(conf):
-            self.conf=conf
-        else:
-            self.conf=Conf()
-        self.alias=Alias(conf)
+        self.alias=Alias(self._conf)
         self.clean=True
-        for path, subdirs, files in os.walk(self.conf.get("library_path")):
+        for path, subdirs, files in os.walk(self._conf.get("library_path")):
             for name in files:
                 if(fnmatch(name, "*.txt")):
                     self.source.add(os.path.join(path, name))
-        for path, subdirs, files in os.walk(self.conf.get("custom_path")):
+        for path, subdirs, files in os.walk(self._conf.get("custom_path")):
             for name in files:
                 if(fnmatch(name, "*.txt")):
                     self.custom.add(os.path.join(path, name))
-        if(not os.path.isdir(self.conf.get("module_path"))):
-            os.makedirs(self.conf.get("module_path"))
-        for f in os.listdir(self.conf.get("module_path")):
+        if(not os.path.isdir(self._conf.get("module_path"))):
+            os.makedirs(self._conf.get("module_path"))
+        for f in os.listdir(self._conf.get("module_path")):
             if(fnmatch(f, "*.module")):
-                os.unlink(self.conf.get("module_path")+f)
+                os.unlink(self._conf.get("module_path")+f)
         self.priorityRegex=re.compile("(?<=\.)\d+$")
         for src in self._sortPriority(self.source):
             self._makeModule(src)
@@ -77,7 +103,7 @@ class Compile:
         m=re.search(self.priorityRegex, module)
         if(m):
             module=module.replace("."+m.group(), "")
-        modFile=self.conf.get("module_path")+module+".module"
+        modFile=self._conf.get("module_path")+module+".module"
         modFlag=False
         with open(src, "r") as sf, open(modFile, "a") as tf:
             for line in sf:
@@ -116,7 +142,7 @@ class Compile:
                                 print(text, file=fn)
 
 def main():
-    c=Compile()
+    c=Compile().compile()
 
 if(__name__=="__main__"):
     main()
