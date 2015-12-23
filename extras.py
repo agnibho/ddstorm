@@ -1,31 +1,37 @@
-# DDStorm
-# -------
-# Copyright (c) 2015 Agnibho Mondal
-# All rights reserved
+'''
+This module provides some extra functionalities to the main window.
+'''
+'''
+Copyright (c) 2015 Agnibho Mondal
+All rights reserved
 
-# This file is part of DDStorm.
+This file is part of DDStorm.
 
-# DDStorm is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+DDStorm is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-# DDStorm is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+DDStorm is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-# You should have received a copy of the GNU General Public License
-# along with DDStorm.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with DDStorm.  If not, see <http://www.gnu.org/licenses/>.
+'''
 
-import subprocess, os
+import subprocess
+import os
 from PyQt4 import QtGui, QtCore
 from const import *
 
 def x_settings():
+    ''' Open the configuration file '''
     subprocess.Popen(["xdg-open", CONF_FILE])
 
 def x_lib():
+    ''' Open the library path '''
     if(os.path.isfile(CONF_FILE)):
             with open(CONF_FILE) as conf:
                 for line in conf:
@@ -35,6 +41,7 @@ def x_lib():
                            subprocess.Popen(["xdg-open", library_path])
 
 def x_save(w, symp, diff):
+    ''' Save data to a file '''
     fname=QtGui.QFileDialog.getSaveFileName(w, "Save File", "~", "HTML files('*.html')")
     if(not fname.endswith(".html")):
         fname=fname+".html"
@@ -52,25 +59,40 @@ def x_save(w, symp, diff):
         print("</ol></td></tr></table></body></html>", file=f)
 
 def x_help():
+    ''' Show help '''
     if(os.path.isfile(HELP_FILE)):
         subprocess.Popen(["xdg-open", HELP_FILE])
     else:
         subprocess.Popen(["xdg-open", "http://www.agnibho.com"])
 
 def x_logfile():
+    ''' Open log file '''
     subprocess.Popen(["xdg-open", LOG_FILE])
 
+
 class SettingsDialog(QtGui.QDialog):
+    '''
+    Provides a dialog box to configure application settings with a
+    graphical user interface.
+    '''
+    
     def __init__(self, conf):
+        ''' Initiate the dialog '''
         super(SettingsDialog, self).__init__()
         self.setWindowTitle("Settings")
         self.conf=conf
         self.initUI()
+
     def initUI(self):
+        ''' Initiate the user interface '''
         self.lpLabel=QtGui.QLabel("Libary Path:")
         self.lpEdit=QtGui.QLineEdit(self.conf.get("library_path"))
         self.lpBrowse=QtGui.QPushButton("Browse")
         self.lpBrowse.clicked.connect(self.lpUpdate)
+        self.cpLabel=QtGui.QLabel("Custom Path:")
+        self.cpEdit=QtGui.QLineEdit(self.conf.get("custom_path"))
+        self.cpBrowse=QtGui.QPushButton("Browse")
+        self.cpBrowse.clicked.connect(self.cpUpdate)
         self.mpLabel=QtGui.QLabel("Module Path:")
         self.mpEdit=QtGui.QLineEdit(self.conf.get("module_path"))
         self.mpBrowse=QtGui.QPushButton("Browse")
@@ -99,24 +121,33 @@ class SettingsDialog(QtGui.QDialog):
         layout.addWidget(self.lpLabel, 0, 0)
         layout.addWidget(self.lpEdit, 0, 1)
         layout.addWidget(self.lpBrowse, 0, 2)
-        layout.addWidget(self.mpLabel, 1, 0)
-        layout.addWidget(self.mpEdit, 1, 1)
-        layout.addWidget(self.mpBrowse, 1, 2)
-        layout.addWidget(self.splash, 2, 0)
-        layout.addWidget(self.clean, 3, 0)
-        layout.addWidget(self.status, 4, 0)
-        layout.addLayout(ctrl, 5, 1)
+        layout.addWidget(self.cpLabel, 1, 0)
+        layout.addWidget(self.cpEdit, 1, 1)
+        layout.addWidget(self.cpBrowse, 1, 2)
+        layout.addWidget(self.mpLabel, 2, 0)
+        layout.addWidget(self.mpEdit, 2, 1)
+        layout.addWidget(self.mpBrowse, 2, 2)
+        layout.addWidget(self.splash, 3, 0)
+        layout.addWidget(self.clean, 4, 0)
+        layout.addWidget(self.status, 5, 0)
+        layout.addLayout(ctrl, 6, 1)
 
         self.cancel.setFocus()
 
     def lpUpdate(self):
+        ''' Updates the library path '''
         self.lpEdit.setText(self.getFolder())
+        
     def cpUpdate(self):
+        ''' Updates the custom path '''
         self.cpEdit.setText(self.getFolder())
+        
     def mpUpdate(self):
+        ''' Updates the module path '''
         self.mpEdit.setText(self.getFolder())
 
     def getFolder(self):
+        ''' Returns the selected directory '''
         dn=QtGui.QFileDialog.getExistingDirectory()
         if(dn.startswith(QtCore.QDir.currentPath())):
            dn="."+dn[len(QtCore.QDir.currentPath()):]+"/"
@@ -125,8 +156,9 @@ class SettingsDialog(QtGui.QDialog):
         return dn
 
     def save(self):
+        ''' Saves the configuration to disk '''
         self.conf.set("library_path", self.lpEdit.text())
-        self.conf.set("class_path", self.cpEdit.text())
+        self.conf.set("custom_path", self.cpEdit.text())
         self.conf.set("module_path", self.mpEdit.text())
         if(self.splash.isChecked()):
             self.conf.set("splash_screen", "yes")
@@ -145,6 +177,7 @@ class SettingsDialog(QtGui.QDialog):
         self.conf.write()
 
     def reset(self):
+        ''' Resests the settings to the default factory value '''
         self.conf.default()
         self.lpEdit.setText(self.conf.get("library_path"))
         self.cpEdit.setText(self.conf.get("class_path"))

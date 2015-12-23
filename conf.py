@@ -25,7 +25,7 @@ along with DDStorm.  If not, see <http://www.gnu.org/licenses/>.
 import os
 import logging
 
-from const import *                     # Import constants
+from const import *
 
 logging.basicConfig(filename=LOG_FILE)
 
@@ -40,7 +40,7 @@ class Conf:
       function calls.
     '''
     
-    _conf={} #Initiates configuration dictionary
+    _conf={}
     
     def __init__(self, filename=CONF_FILE):
         '''
@@ -65,47 +65,59 @@ class Conf:
 
     def read(self):
         ''' Read the configuration file and collect the values '''
-        if(os.path.isfile(self.filename)):         # If file is actually present
+        # If file is actually present
+        if(os.path.isfile(self.filename)):
             try:
-                with open(self.filename) as f:     # Open file
+                with open(self.filename) as f:
                     for line in f:
-                        line="".join(line.split()) # Removes any stray whitespaces
-                        if(line.startswith("#")):  # Ignores comments
+                        # Removes any stray whitespaces
+                        line="".join(line.split())
+                        # Ignores comments starting with #
+                        if(line.startswith("#")):
                             pass
-                        elif(line.startswith("library_path=")):                 # Library files path
+                        # Library path
+                        elif(line.startswith("library_path=")):
                             self._conf["library_path"]=line[13:]
                             if(os.path.isdir(self._conf["library_path"])):
                                if(not self._conf["library_path"].endswith("/")):
                                    self._conf["library_path"]+="/"
-                        elif(line.startswith("custom_path=")):                  # Custom files path
+                        # Custom path
+                        elif(line.startswith("custom_path=")):
                             self._conf["custom_path"]=line[12:]
                             if(os.path.isdir(self._conf["custom_path"])):
                                if(not self._conf["custom_path"].endswith("/")):
                                    self._conf["custom_path"]+="/"
-                        elif(line.startswith("index_path=")):                   # Index files path
+                        # Index path
+                        elif(line.startswith("index_path=")):
                             self._conf["index_path"]=line[11:]
                             if(os.path.isdir(self._conf["index_path"])):
                                if(not self._conf["index_path"].endswith("/")):
                                    self._conf["index_path"]+="/"
-                        elif(line.startswith("alias_path=")):                   # Alias files path
+                        # Alias path
+                        elif(line.startswith("alias_path=")):
                             self._conf["alias_path"]=line[11:]
                             if(os.path.isdir(self._conf["alias_path"])):
                                if(not self._conf["alias_path"].endswith("/")):
                                    self._conf["alias_path"]+="/"
-                        elif(line.startswith("module_path=")):                  # Path to save compiled modules
+                        # Module path
+                        elif(line.startswith("module_path=")):
                             self._conf["module_path"]=line[12:]
                             if(os.path.isdir(self._conf["module_path"])):
                                if(not self._conf["module_path"].endswith("/")):
                                    self._conf["module_path"]+="/"
-                        elif(line.startswith("splash_screen=")):                # Whether to show a splash screen
+                        # Splash screen
+                        elif(line.startswith("splash_screen=")):
                             self._conf["splash_screen"]=line[14:]
-                        elif(line.startswith("clean_log=")):                    # Whether to clean logs before exit
+                        # Clean log
+                        elif(line.startswith("clean_log=")):
                             self._conf["clean_log"]=line[10:]
-                        elif(line.startswith("status_message=")):               # Whether to show status messages
+                        # Status message
+                        elif(line.startswith("status_message=")):
                             self._conf["status_message"]=line[15:]
+                        # Unknown option
                         else:
-                            logging.warning("Unrecognized configuration: "+line) # Log a warning if unrecognized option found
-            except:     # Go with default if file could not be read and log an error
+                            logging.warning("Unrecognized configuration: "+line)
+            except:
                 logging.error("Configuration file "+self.filename+" could not be read. Using default configurations.")
 
     def get(self, key=False):
