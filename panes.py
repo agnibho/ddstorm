@@ -22,9 +22,9 @@ You should have received a copy of the GNU General Public License
 along with DDStorm.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore
 
-class Symptoms(QtGui.QFrame):
+class Symptoms(QtWidgets.QFrame):
     ''' Provides the widget for symptoms input '''
 
     # List to hold the symptoms
@@ -49,28 +49,28 @@ class Symptoms(QtGui.QFrame):
 
     def initUI(self):
         ''' Initiate the user interface '''
-        self.label=QtGui.QLabel("Symptoms")
+        self.label=QtWidgets.QLabel("Symptoms")
         self.label.setStyleSheet("font-size:18px")
 
-        self.listWidget=QtGui.QListWidget(self)
+        self.listWidget=QtWidgets.QListWidget(self)
         self.listWidget.setStyleSheet("font-size:14px")
         self.listWidget.setSelectionMode(4)
 
-        self.rm=QtGui.QPushButton("Remove")
+        self.rm=QtWidgets.QPushButton("Remove")
         self.rm.clicked.connect(self.remove)
 
-        self.cl=QtGui.QPushButton("Clear All")
+        self.cl=QtWidgets.QPushButton("Clear All")
         self.cl.clicked.connect(self.removeAll)
 
-        self.browse=QtGui.QPushButton("Browse Symptoms")
+        self.browse=QtWidgets.QPushButton("Browse Symptoms")
         self.browse.clicked.connect(self.browseSymptoms)
 
-        self.add=QtGui.QPushButton("Add")
+        self.add=QtWidgets.QPushButton("Add")
         self.add.clicked.connect(self.addItem)
 
-        self.new=QtGui.QLineEdit(self)
+        self.new=QtWidgets.QLineEdit(self)
         self.new.returnPressed.connect(self.addItem)
-        self.completer=QtGui.QCompleter(self.auto)
+        self.completer=QtWidgets.QCompleter(self.auto)
         self.completer.setCaseSensitivity(0)
         self.completer.setCompletionMode(2)
         self.new.setCompleter(self.completer)
@@ -78,14 +78,14 @@ class Symptoms(QtGui.QFrame):
         self.browser=SymptomBrowser(self.auto)
         self.browser.added.connect(self.addItem)
 
-        hboxt=QtGui.QHBoxLayout()
+        hboxt=QtWidgets.QHBoxLayout()
         hboxt.addWidget(self.new)
         hboxt.addWidget(self.add)
-        hboxb=QtGui.QHBoxLayout()
+        hboxb=QtWidgets.QHBoxLayout()
         hboxb.addWidget(self.rm)
         hboxb.addWidget(self.cl)
         hboxb.addWidget(self.browse)
-        vbox=QtGui.QVBoxLayout()
+        vbox=QtWidgets.QVBoxLayout()
         vbox.addWidget(self.label)
         vbox.addLayout(hboxt)
         vbox.addWidget(self.listWidget)
@@ -98,14 +98,14 @@ class Symptoms(QtGui.QFrame):
             text=self.new.text()
         if(len(text)>0):
             if(text in self.sympList):
-                QtGui.QMessageBox.information(self, "Duplicate Symptom", "'"+text+"' has already been added to the symptom list.")
+                QtWidgets.QMessageBox.information(self, "Duplicate Symptom", "'"+text+"' has already been added to the symptom list.")
             elif(text in self.auto):
-                QtGui.QListWidgetItem(text, self.listWidget)
+                QtWidgets.QListWidgetItem(text, self.listWidget)
                 self.sympList.append(text)
                 self.new.clear()
                 self.changed.emit(list(self.sympList))
             else:
-                QtGui.QMessageBox.warning(self, "Symptom Unvailable", "'"+text+"' is not available in the current Library.")
+                QtWidgets.QMessageBox.warning(self, "Symptom Unvailable", "'"+text+"' is not available in the current Library.")
 
     def remove(self, all=False):
         ''' Remove selected symptoms '''
@@ -130,7 +130,7 @@ class Symptoms(QtGui.QFrame):
         return self.sympList
 
 
-class SymptomBrowser(QtGui.QDialog):
+class SymptomBrowser(QtWidgets.QDialog):
     '''
     Provides a dialog with a list of symptoms for alternative user
     input.
@@ -146,12 +146,12 @@ class SymptomBrowser(QtGui.QDialog):
 
     def initUI(self):
         ''' Initiate the dialog interface '''
-        self.search=QtGui.QLineEdit()
+        self.search=QtWidgets.QLineEdit()
         self.search.textChanged.connect(self.refresh)
-        self.listItems=QtGui.QListWidget()
+        self.listItems=QtWidgets.QListWidget()
         self.listItems.activated.connect(self.sendUp)
 
-        layout=QtGui.QVBoxLayout(self)
+        layout=QtWidgets.QVBoxLayout(self)
         layout.addWidget(self.search)
         layout.addWidget(self.listItems)
 
@@ -174,7 +174,7 @@ class SymptomBrowser(QtGui.QDialog):
         self.close()
 
 
-class Differentials(QtGui.QFrame):
+class Differentials(QtWidgets.QFrame):
     ''' Provides the widget for differential diagnosis output '''
     data=[]
     
@@ -185,12 +185,12 @@ class Differentials(QtGui.QFrame):
         
     def initUI(self):
         ''' Initiate the user interface '''
-        self.label=QtGui.QLabel("Differential Diagnosis")
+        self.label=QtWidgets.QLabel("Differential Diagnosis")
         self.label.setStyleSheet("font-size:18px")
-        self.listWidget=QtGui.QListWidget(self)
+        self.listWidget=QtWidgets.QListWidget(self)
         self.listWidget.setStyleSheet("font-size:14px")
         self.listWidget.setSelectionMode(0)
-        box=QtGui.QVBoxLayout()
+        box=QtWidgets.QVBoxLayout()
         box.addWidget(self.label)
         box.addWidget(self.listWidget)
         self.setLayout(box)
@@ -207,7 +207,7 @@ class Differentials(QtGui.QFrame):
         self.listWidget.clear()
         if(self.data):
             for d in self.data:
-                QtGui.QListWidgetItem(d, self.listWidget)
+                QtWidgets.QListWidgetItem(d, self.listWidget)
 
     def getList(self):
         ''' Return a list of current differential diagnosis '''

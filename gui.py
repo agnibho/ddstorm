@@ -27,7 +27,7 @@ import sys
 import time
 import subprocess
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 
 from panes import Symptoms, Differentials
 from ddstorm import DDStorm
@@ -37,7 +37,7 @@ from const import *
 
 conf=False
 
-class Content(QtGui.QWidget):
+class Content(QtWidgets.QWidget):
     '''
     Provides the main content widget. Contains the sysmptoms and
     the diagnosis panes. Also creates the DDStorm object and performs
@@ -56,7 +56,7 @@ class Content(QtGui.QWidget):
 
         # Show warning if any error happened during data compilation 
         if(not self.dd.compiler.is_clean()):
-            ret=QtGui.QMessageBox.warning(self, "Compilation Error", "Error was encountered while compiling the Knowledgebase.", "Ignore", "View Log")
+            ret=QtWidgets.QMessageBox.warning(self, "Compilation Error", "Error was encountered while compiling the Knowledgebase.", "Ignore", "View Log")
             if(ret==1):
                 x_logfile()
         
@@ -67,21 +67,21 @@ class Content(QtGui.QWidget):
         
         global conf
 
-        grid=QtGui.QGridLayout()
+        grid=QtWidgets.QGridLayout()
         self.setLayout(grid)
 
         self.symp=Symptoms(self.dd.symptoms())
-        self.symp.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.symp.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.symp.changed.connect(self.update)
 
         self.diff=Differentials()
-        self.diff.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.diff.setFrameShape(QtWidgets.QFrame.StyledPanel)
 
         grid.addWidget(self.symp, 0, 0)
         grid.addWidget(self.diff, 0, 1)
         grid.setColumnStretch(0, 1)
         grid.setColumnStretch(1, 1)
-        QtGui.QApplication.setStyle(QtGui.QStyleFactory.create("Cleanlooks"))
+        QtWidgets.QApplication.setStyle(QtWidgets.QStyleFactory.create("Cleanlooks"))
         
     def update(self, data):
         ''' Update the inteface with refreshed information '''
@@ -89,7 +89,7 @@ class Content(QtGui.QWidget):
         self.change.emit()
 
 
-class Window(QtGui.QMainWindow):
+class Window(QtWidgets.QMainWindow):
     '''
     Provides main application window. Acts as a container for the
     content widget. Also contains the menubar and the status bar.
@@ -115,7 +115,7 @@ class Window(QtGui.QMainWindow):
         menuEdit=menu.addMenu("&Edit")
         menuEdit.addAction("&Add").triggered.connect(self.con.symp.addItem)
         menuEdit.addAction("&Browse Symptoms").triggered.connect(self.con.symp.browseSymptoms)
-        rmAction=QtGui.QAction("&Remove", self)
+        rmAction=QtWidgets.QAction("&Remove", self)
         rmAction.setShortcut("Delete")
         rmAction.triggered.connect(self.con.symp.remove)
         menuEdit.addAction(rmAction)
@@ -153,12 +153,12 @@ class Window(QtGui.QMainWindow):
 
     def about(self):
         ''' Show information about this application '''
-        QtGui.QMessageBox.about(self, "About", "<h1>DDStorm</h1>\nBrainstorm Medicine")
+        QtWidgets.QMessageBox.about(self, "About", "<h1>DDStorm</h1>\nBrainstorm Medicine")
 
 
 def main():
     ''' Start the main application interface '''
-    app=QtGui.QApplication(sys.argv)
+    app=QtWidgets.QApplication(sys.argv)
 
     # Initiate the global configuration
     global conf
@@ -174,7 +174,7 @@ def main():
     else:
         ss=False
     if(ss):
-        splash=QtGui.QSplashScreen(QtGui.QPixmap("icons/splash.png"))
+        splash=QtWidgets.QSplashScreen(QtWidgets.QPixmap("icons/splash.png"))
         splash.show()
         time.sleep(0.1)
         app.processEvents()

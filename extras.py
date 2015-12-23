@@ -23,7 +23,7 @@ along with DDStorm.  If not, see <http://www.gnu.org/licenses/>.
 
 import subprocess
 import os
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore
 from const import *
 
 def x_settings():
@@ -42,7 +42,7 @@ def x_lib():
 
 def x_save(w, symp, diff):
     ''' Save data to a file '''
-    fname=QtGui.QFileDialog.getSaveFileName(w, "Save File", "~", "HTML files('*.html')")
+    fname=QtWidgets.QFileDialog.getSaveFileName(w, "Save File", "~", "HTML files('*.html')")
     if(not fname.endswith(".html")):
         fname=fname+".html"
     with open(fname, "w") as f:
@@ -70,7 +70,7 @@ def x_logfile():
     subprocess.Popen(["xdg-open", LOG_FILE])
 
 
-class SettingsDialog(QtGui.QDialog):
+class SettingsDialog(QtWidgets.QDialog):
     '''
     Provides a dialog box to configure application settings with a
     graphical user interface.
@@ -85,39 +85,39 @@ class SettingsDialog(QtGui.QDialog):
 
     def initUI(self):
         ''' Initiate the user interface '''
-        self.lpLabel=QtGui.QLabel("Libary Path:")
-        self.lpEdit=QtGui.QLineEdit(self.conf.get("library_path"))
-        self.lpBrowse=QtGui.QPushButton("Browse")
+        self.lpLabel=QtWidgets.QLabel("Libary Path:")
+        self.lpEdit=QtWidgets.QLineEdit(self.conf.get("library_path"))
+        self.lpBrowse=QtWidgets.QPushButton("Browse")
         self.lpBrowse.clicked.connect(self.lpUpdate)
-        self.cpLabel=QtGui.QLabel("Custom Path:")
-        self.cpEdit=QtGui.QLineEdit(self.conf.get("custom_path"))
-        self.cpBrowse=QtGui.QPushButton("Browse")
+        self.cpLabel=QtWidgets.QLabel("Custom Path:")
+        self.cpEdit=QtWidgets.QLineEdit(self.conf.get("custom_path"))
+        self.cpBrowse=QtWidgets.QPushButton("Browse")
         self.cpBrowse.clicked.connect(self.cpUpdate)
-        self.mpLabel=QtGui.QLabel("Module Path:")
-        self.mpEdit=QtGui.QLineEdit(self.conf.get("module_path"))
-        self.mpBrowse=QtGui.QPushButton("Browse")
+        self.mpLabel=QtWidgets.QLabel("Module Path:")
+        self.mpEdit=QtWidgets.QLineEdit(self.conf.get("module_path"))
+        self.mpBrowse=QtWidgets.QPushButton("Browse")
         self.mpBrowse.clicked.connect(self.mpUpdate)
-        self.splash=QtGui.QCheckBox("Show Splash Screen")
+        self.splash=QtWidgets.QCheckBox("Show Splash Screen")
         if(self.conf.get("splash_screen")=="yes"):
             self.splash.setChecked(True)
-        self.clean=QtGui.QCheckBox("Clean Log on Exit")
+        self.clean=QtWidgets.QCheckBox("Clean Log on Exit")
         if(self.conf.get("clean_log")=="yes"):
             self.clean.setChecked(True)
-        self.status=QtGui.QCheckBox("Show Status Message")
+        self.status=QtWidgets.QCheckBox("Show Status Message")
         if(self.conf.get("status_message")=="on"):
             self.status.setChecked(True)
-        self.ok=QtGui.QPushButton("Ok")
+        self.ok=QtWidgets.QPushButton("Ok")
         self.ok.clicked.connect(self.save)
-        self.cancel=QtGui.QPushButton("Cancel")
+        self.cancel=QtWidgets.QPushButton("Cancel")
         self.cancel.clicked.connect(self.close)
-        self.default=QtGui.QPushButton("Default")
+        self.default=QtWidgets.QPushButton("Default")
         self.default.clicked.connect(self.reset)
 
-        ctrl=QtGui.QHBoxLayout()
+        ctrl=QtWidgets.QHBoxLayout()
         ctrl.addWidget(self.ok)
         ctrl.addWidget(self.cancel)
         ctrl.addWidget(self.default)
-        layout=QtGui.QGridLayout(self)
+        layout=QtWidgets.QGridLayout(self)
         layout.addWidget(self.lpLabel, 0, 0)
         layout.addWidget(self.lpEdit, 0, 1)
         layout.addWidget(self.lpBrowse, 0, 2)
@@ -148,7 +148,7 @@ class SettingsDialog(QtGui.QDialog):
 
     def getFolder(self):
         ''' Returns the selected directory '''
-        dn=QtGui.QFileDialog.getExistingDirectory()
+        dn=QtWidgets.QFileDialog.getExistingDirectory()
         if(dn.startswith(QtCore.QDir.currentPath())):
            dn="."+dn[len(QtCore.QDir.currentPath()):]+"/"
         else:
@@ -172,7 +172,7 @@ class SettingsDialog(QtGui.QDialog):
             self.conf.set("status_message", "on")
         else:
             self.conf.set("status_message", "off")
-        QtGui.QMessageBox.information(self, "Restart required", "Some settings takes effect only after restarting DDStorm")
+        QtWidgets.QMessageBox.information(self, "Restart required", "Some settings takes effect only after restarting DDStorm")
         self.close()
         self.conf.write()
 
